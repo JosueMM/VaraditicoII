@@ -100,12 +100,17 @@ while($fila = mysqli_fetch_array($ejecutar)){
     $pass = ($fila['contra']);
     $correoL = $_POST['correo'];
     $correoBD = $fila['correo'];
+
     if($contra== $pass && $correoL== $correoBD){
+
         $logeo = false;
           echo "<script> alert ('LOGEADO!')</script>"; 
           echo '<script type="text/javascript">
            window.location = "index.php"
       </script>';
+      $id=$fila['id'];
+      $consulta = "UPDATE usuarios SET log = '1' WHERE id=$id";
+      $ejecutar = mysqli_query($con, $consulta);
           break;   
     }
 
@@ -122,7 +127,8 @@ if($logeo){
                             <!-- TABS CONTENT SIGNUP -->
                     		<div id="signup-tab-content">
                     			<form method = "POST" action = "Login.php">
-                                    <p id="ubicacion"></p>
+                                     <label> Clave de ubicacion :</label>
+                                    <input type="text" class="input" id="ubicacion" name="ubicacion" required readonly >
         <label> Nombre :</label>
         <input type="text" class="input" name="nombre" required >
         <br/>
@@ -162,10 +168,10 @@ if($logeo){
             navigator.geolocation.getCurrentPosition((position)=>{
 this.latitude = position.coords.latitude;
  this.longitude = position.coords.longitude;
-callback();
+
 
 var res = latitude + "," + longitude;
-alert(res);
+document.getElementById('ubicacion').value = res;
 
             });
         }else{
@@ -185,16 +191,18 @@ if(isset($_POST['insert'])){
     $contra = md5($contra);
     $servicio = $_POST['servicios'];
     $descripcion = $_POST['descripcion'];
+  
+    $ubicacion = $_POST['ubicacion'];
     $estado= 1;
 
       
 
     
- 
-   if($_POST['servicios']=="servicio?"){
-$insert = "INSERT INTO usuarios(nombre, correo,contra,servicio,descripcion,estado,ubicacion) VALUES ('$nombre','$correo','$contra','NO','NO','1','$ubicacion')";
+
+   if($_POST['servicios']=="no"){
+$insert = "INSERT INTO usuarios(nombre, correo,contra,servicio,descripcion,estado,ubicacion,log) VALUES ('$nombre','$correo','$contra','NO','NO','1','$ubicacion','0')";
    }else{
-    $insert = "INSERT INTO usuarios(nombre, correo,contra,servicio,descripcion,estado,ubicacion) VALUES ('$nombre','$correo','$contra','$servicio','$descripcion','$estado','$ubicacion')";
+    $insert = "INSERT INTO usuarios(nombre, correo,contra,servicio,descripcion,estado,ubicacion,log) VALUES ('$nombre','$correo','$contra','$servicio','$descripcion','$estado','$ubicacion','0')";
    }
  
 
@@ -217,15 +225,7 @@ if($ejecutar){
                 
 <script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 
-<script type="text/javascript">
-function mostrar(){
-document.getElementById('servicio').style.display = 'block';}
-</script>
 
-<script type="text/javascript">
-function ocultar(){
-document.getElementById('servicio').style.display = 'none';}
-</script>
 <script >/* LOGIN - MAIN.JS - dp 2017 */
 
 // LOGIN TABS

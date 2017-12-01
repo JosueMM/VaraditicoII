@@ -18,7 +18,7 @@
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
-                        <a class="nav-link text-white" href="#">Home</a>
+                        <a class="nav-link text-white" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">Servicios</a>
@@ -27,7 +27,7 @@
                         <a class="nav-link text-white" href="#">Mensajes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Perfil
+                        <a class="nav-link text-white" href="perfil.php">Perfil
                         </a>
                     </li>
                   
