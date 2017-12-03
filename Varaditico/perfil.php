@@ -129,6 +129,14 @@
 <?php
 					$consulta = "SELECT * FROM usuarios WHERE log='1'";
                     $ejecutar = mysqli_query($con, $consulta);
+         $nombre = "";
+        $email = "";
+        $contrasena = "";
+        $servicio = "no";
+        $descripcion = "";
+        $estado = "0";
+        $ubicacion = "";
+        $contrasena = "";
 while($fila = mysqli_fetch_array($ejecutar)){
 	if($fila['log'] == "1"){
 
@@ -138,18 +146,9 @@ while($fila = mysqli_fetch_array($ejecutar)){
         $servicio = $fila['servicio'];
         $descripcion = $fila['descripcion'];
         $estado = $fila['estado'];
-        $ubicacion = $fila['ubicacion'];
+        $ubicacion = $fila['ubicacion'] + $fila['longitud'];
         $id = $fila['id'];
         $contrasena = md5($contrasena);
-	}else{
-		$nombre = "Invitado";
-        $email = "Invitado";
-        $contrasena = "Invitado";
-        $servicio = "no";
-        $descripcion = "NO";
-        $estado = "0";
-        $ubicacion = "Invitado";
-        $contrasena = "Invitado";
 	}
         
 
@@ -188,7 +187,7 @@ while($fila = mysqli_fetch_array($ejecutar)){
 					<br>
 					<button type="button" class="btn btn-principal btn-sm" onclick="<?php echo $consulta = "UPDATE usuarios SET log='0 ' WHERE id='$id'" ;
     
- $ejecutar = mysqli_query($con, $consulta); ?>" <a href="window.location.href = 'Login.php'"></a>>Log Out</button>
+          $ejecutar = mysqli_query($con, $consulta); ?>" action= "login.php">Log Out</button>
 
 
 				</div>

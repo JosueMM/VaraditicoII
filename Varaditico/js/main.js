@@ -1,31 +1,46 @@
-function initMap(){
-	var ubicacion = new Localizacion(()=>{
-      //guardar myLATlng en base de datos y hacer update con cada login asi cargar las ubicaciones  
-  const myLatLng = {lat: ubicacion.latitude,lng: ubicacion.longitude};
-      
+var a = "";
+var b = "";
 
-      var texto = '<h5>Josue Mora</h5><br><p>Mecanico automiviles</p><br><a href="">Mensaje</a> <a href="">Contratar</a>'
-      
-       const options ={ 
-       	center:myLatLng,
-       	zoom:13
-       }
+function initialize() {
+    if(navigator.geolocation){
+      //obtenemos ubicacion
+      navigator.geolocation.getCurrentPosition((position)=>{
+a = position.coords.latitude;
+b = position.coords.longitude;
+alert(a+','+b)
+      });
+    }else{
+      alert("tu navegador no soporta geolocalizacion!! :(")
 
-        var map = document.getElementById('map');
-        const mapa = new google.maps.Map(map,options);
-	    
-	    const marcador = new google.maps.Marker({
- position: myLatLng,
- map: mapa,
- title: "Posicion seleccionada"
-	    });
+    }
 
- var informacion = new google.maps.InfoWindow({
- 	content: texto
- });
+      var marcadores = [
+       ['Mi','Posicion', a,b],
+        //['Josue','Mecanico de motos', 10.3341119, -84.4355739],
+        ['Roque','Mecanico de motos', 10.334998, -84.431008],
+        ['Francisco','Mecanico de motos', 10.336386, -84.434377]
+      ];
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 16,
+        center: new google.maps.LatLng(a,b),
+        
+      });
+      var infowindow = new google.maps.InfoWindow();
+      var marker, i;
+      for (i = 0; i < marcadores.length; i++) {  
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(marcadores[i][2], marcadores[i][3]),
+          map: map
+        });
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+          return function() {
+            infowindow.setContent(marcadores[i][0]+' '+marcadores[i][1]);
+            infowindow.open(map, marker);
+          }
+        })(marker, i));
+      }
+    }
+  
+  
 
- marcador.addListener('click', function(){
- 	informacion.open(mapa,marcador);
- });
-	});
-}
+    

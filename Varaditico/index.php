@@ -1,6 +1,8 @@
 <!DOCTYPE html>
+<?php  $con = mysqli_connect("localhost","root","","varaditico") or die ("Error de conexion"); ?>
 <html>
 <head>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
@@ -223,14 +225,94 @@
     </footer>
     <!-- Footer -->
 
+
+
+<script >
+
+
+function initialize() {
+var a = "";
+var b = "";
+    if(navigator.geolocation){
+      //obtenemos ubicacion
+      navigator.geolocation.getCurrentPosition((position)=>{
+a = position.coords.latitude;
+b = position.coords.longitude;
+
+      });
+    }else{
+      alert("tu navegador no soporta geolocalizacion!! :(")
+
+    }
+
+      var marcadores = [
+       ['Mi','Posicion',a,b],
+        //['Josue','Mecanico de motos', 10.3341119, -84.4355739],
+        ['Roque','Mecanico de motos', 10.334998, -84.431008],
+        ['Francisco','Mecanico de motos', 10.336386, -84.434377]
+      ];
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 16,
+
+        center: new google.maps.LatLng(a,b)
+        
+      });
+      alert(a+','+b);
+      var infowindow = new google.maps.InfoWindow();
+      var marker, i;
+      for (i = 0; i < marcadores.length; i++) {  
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(marcadores[i][2], marcadores[i][3]),
+          map: map
+        });
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+          return function() {
+            infowindow.setContent(marcadores[i][0]+' '+marcadores[i][1]);
+            infowindow.open(map, marker);
+          }
+        })(marker, i));
+      }
+    }
+</script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
       <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvFsfISMEo7_mzwF1cDR__G2QgPEZ1FX0&callback=initMap">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvFsfISMEo7_mzwF1cDR__G2QgPEZ1FX0&callback=initialize">
     </script>
-<script src="js/main.js"></script>
-<script src="js/localizacion.js"></script>
+    
+
 </body>
+<?php 
+$consulta = "SELECT * FROM usuarios WHERE servicio !='NO'";
+$ejecutar = mysqli_query($con, $consulta);
+
+$consultaLog = "SELECT * FROM usuarios WHERE servicio !='NO'";
+$ejecutarLog = mysqli_query($con, $consultaLog);
+
+while($fila = mysqli_fetch_array($ejecutar)){
+
+        $latitudLog = $fila['ubicacion'];
+        $longitudLog = $fila['longitud'];
+        }
+
+while($fila = mysqli_fetch_array($ejecutar)){
+
+        $nombre = $fila['nombre'];
+        $email = $fila['correo'];
+        $servicio = $fila['servicio'];
+        $descripcion = $fila['descripcion'];
+        $estado = $fila['estado']; 
+        $latitud = $fila['ubicacion'];
+        $longitud = $fila['longitud'];
+
+   echo "<script type='text/javascript'>
+
+   
+</script>";
+     
+}
+
+?>
 
 </html>

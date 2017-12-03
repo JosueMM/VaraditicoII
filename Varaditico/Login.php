@@ -82,7 +82,7 @@
                     			<form method="POST" action="Login.php" >
                     				<input type="text" class="input" name="correo" autocomplete="off" placeholder="Email or Username">
                     				<input type="password" class="input" name="pass" autocomplete="off" placeholder="Password">	
-                    				<input type="submit" name="log" value="Login">
+                    				<input type="submit" name="log" class="form-control" value="Login">
                     			</form>
                     			<?php
                                 
@@ -127,8 +127,8 @@ if($logeo){
                             <!-- TABS CONTENT SIGNUP -->
                     		<div id="signup-tab-content">
                     			<form method = "POST" action = "Login.php">
-                                     <label> Clave de ubicacion :</label>
-                                    <input type="text" class="input" id="ubicacion" name="ubicacion" required readonly >
+                                     
+                                    
         <label> Nombre :</label>
         <input type="text" class="input" name="nombre" required >
         <br/>
@@ -155,10 +155,11 @@ if($logeo){
              <label> Descripcion :</label>
              <input type="text" class="input" name="descripcion" >
         <br/>
-        <input type="submit"   name="insert" value ="Registrar">
+        <input type="submit"  class="form-control" name="insert" value ="Registrar">
 
        
-
+<input style="visibility:hidden" type="text" class="input" id="ubicacion" name="ubicacion" required readonly >
+<input style="visibility:hidden" type="text" class="input" id="longitud" name="longitud" required readonly >
             
    </form>
 
@@ -168,10 +169,12 @@ if($logeo){
             navigator.geolocation.getCurrentPosition((position)=>{
 this.latitude = position.coords.latitude;
  this.longitude = position.coords.longitude;
+const myLatLng = {lat: latitude,lng: longitude};
 
-
-var res = latitude + "," + longitude;
+var res = latitude;
+var res2 = longitude;
 document.getElementById('ubicacion').value = res;
+document.getElementById('longitud').value = res2;
 
             });
         }else{
@@ -193,6 +196,7 @@ if(isset($_POST['insert'])){
     $descripcion = $_POST['descripcion'];
   
     $ubicacion = $_POST['ubicacion'];
+    $longitud = $_POST['longitud'];
     $estado= 1;
 
       
@@ -200,9 +204,9 @@ if(isset($_POST['insert'])){
     
 
    if($_POST['servicios']=="no"){
-$insert = "INSERT INTO usuarios(nombre, correo,contra,servicio,descripcion,estado,ubicacion,log) VALUES ('$nombre','$correo','$contra','NO','NO','1','$ubicacion','0')";
+$insert = "INSERT INTO usuarios(nombre, correo,contra,servicio,descripcion,estado,ubicacion,longitud,log) VALUES ('$nombre','$correo','$contra','NO','NO','1','$ubicacion','$longitud','0')";
    }else{
-    $insert = "INSERT INTO usuarios(nombre, correo,contra,servicio,descripcion,estado,ubicacion,log) VALUES ('$nombre','$correo','$contra','$servicio','$descripcion','$estado','$ubicacion','0')";
+    $insert = "INSERT INTO usuarios(nombre, correo,contra,servicio,descripcion,estado,ubicacion,longitud,log) VALUES ('$nombre','$correo','$contra','$servicio','$descripcion','$estado','$ubicacion','$longitud','0')";
    }
  
 
