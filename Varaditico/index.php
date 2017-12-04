@@ -225,9 +225,43 @@
 
     </footer>
     <!-- Footer -->
+<script >
 
 
-<p id="marcas"> <?php echo $marcas ?></p>
+</script>
+
+<?php 
+
+ $consulta = "SELECT * FROM usuarios WHERE servicio != 'No'";
+ $ejecutar = mysqli_query($con, $consulta);
+$valor = "";
+$cont=0;
+
+$usuarios = array();
+ while($fila = mysqli_fetch_array($ejecutar)){
+    
+    $nombre = ($fila['nombre']);
+    $descripcion = $fila['descripcion'];
+    $lat = $fila['ubicacion'];
+    $long = $fila['longitud'];
+
+$array =[$nombre,$descripcion,$lat,$long];
+ 
+
+
+    
+   array_push($usuarios, $array);
+}
+
+
+
+
+
+
+
+
+ ?>
+<p id="marcas"> < ></p>
 <script >
 
 function initialize() {
@@ -238,38 +272,20 @@ function initialize() {
     let a = position.coords.latitude;
     let b = position.coords.longitude;
 
-<?php 
-$info = "";
- $consulta = "SELECT * FROM usuarios WHERE servicio != 'No'";
- $ejecutar = mysqli_query($con, $consulta);
+     var array = [
+      ['Mi','Posicion',a,b]
 
-    $nombre = "";
-    $descripcion = "";
-    $lat = "";
-    $long = "";
+      ];
 
- while($fila = mysqli_fetch_array($ejecutar)){
-    
-    $nombre = ($fila['nombre']);
-    $descripcion = $fila['descripcion'];
-    $lat = $fila['ubicacion'];
-    $long = $fila['longitud'];
+    var mark=<?php echo json_encode($usuarios);?>;
 
-$array =[$nombre,$descripcion,$lat,$long];
-    
 
-}
-
- ?>
-
-    var marcadores = [
-      ['Mi','Posicion',a,b]];
-var info = document.getElementById('marcas').value;
+   var marcadores = mark.concat(array);
+ 
 
       
-
       var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 16,
+        zoom: 13,
         center: new google.maps.LatLng(a,b)
         
       });
@@ -282,7 +298,14 @@ var info = document.getElementById('marcas').value;
         });
         google.maps.event.addListener(marker, 'click', (function(marker, i) {
           return function() {
-            infowindow.setContent(marcadores[i][0]+' '+marcadores[i][1]);
+            if(marcadores[i][0]== "Mi"){
+                infowindow.setContent("<h5>"+marcadores[i][0]+"</h5>"+' '+"<p>"+marcadores[i][1]+"</p>");
+
+            }else{
+                infowindow.setContent("<h5>"+marcadores[i][0]+"</h5>"+' '+"<p>"+marcadores[i][1]+"</p><br><a href=''>Mensaje</a> <a href=''>Contratar</a>");
+
+            }
+            
             infowindow.open(map, marker);
           }
         })(marker, i));
