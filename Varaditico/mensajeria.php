@@ -13,7 +13,7 @@
 
  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand text-white" href="index.php">Varaditico</a>
+            <a class="navbar-brand text-white" href="#">Varaditico</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -26,7 +26,7 @@
                         <a class="nav-link text-white" href="#">Servicios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="mensajeria.php">Mensajes</a>
+                        <a class="nav-link text-white" href="#">Mensajes</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="perfil.php">Perfil
@@ -74,75 +74,49 @@
     <!-- Carousel Slider -->
 
     <!-- Card -->
-    <div class="container container mt-4 mb-5">
-        <h3 class="display-4 text-center">Ayuda</h3>
-        <hr class="bg-dark mb-4 w-25">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <img class="card-img-top" src="img/mecanico.jpg">
-                    <div class="card-block p-3">
-                        <h4 class="card-title">Mecanicos</h4>
-                        <p class="card-text">Podras adquirir servicios de mecaica si la necesitas.</p>
-                       
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img class="card-img-top" src="img/grua.jpg" alt="Card image cap">
-                    <div class="card-block p-3">
-                        <h4 class="card-title">Gruas</h4>
-                        <p class="card-text">Si necesitas una grua tabien podras buscar en el mapa ese servicio que necesitas.</p>
-                        
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img class="card-img-top" src="img/mensaje.jpg" alt="Card image cap">
-                    <div class="card-block p-3">
-                        <h4 class="card-title">Mensajes</h4>
-                        <p class="card-text"> Podras hablar con los proveedores de los servicios necesitados</p>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
+    <style type="text/css">
+
+.custab{
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5% 0;
+    box-shadow: 3px 3px 2px #ccc;
+    transition: 0.5s;
+    }
+.custab:hover{
+    box-shadow: 3px 3px 0px transparent;
+    transition: 0.5s;
+    }
+</style>
+
+<div class="container">
+  <div class="page-header">
+  <h3 class="display-4 text-center">Mensajeria</h3>
+</div>
+    <div class="row col-md-12 col-md-offset-2 custyle table-responsive">
+    <table class="table  table-striped custab ">
+    <thead>
+    <a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b>Borrar todos los mensajes</a>
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Mensaje</th>
+            <th class="text-center">Action</th>
+        </tr>
+    </thead>
+            <tr>
+                <td>1</td>
+                <td>News</td>
+                <td>News Cate</td>
+                <td class="text-center"><a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Borrar</a></td>
+            </tr>
+            
+    </table>
     </div>
-    <!-- Card -->
+</div>
+   
 
-    <div class="container mb-5">
-        <div class="row">
-            <div class="col-md-8">
-                <h3 class="display-4">Mapa</h3>
-                <hr class="bg-dark w-25 ml-0">
-                <p class="lead">
-                    Aqui pondras tu ubicacion y te saldran los mas cercanos que podras contratar dependiendo al servicio que necesites.
-                </p>
-                <p>
-                    Podras seleccionar si ocupas grua o mecanico.
-                </p>
-                <ul class="list-unstyled pl-4">
-                    <li><i class="fa fa-check"></i> Facil</li>
-                    <li><i class="fa fa-check"></i> Rapido</li>
-                    <li><i class="fa fa-check"></i> Eficaz</li>
-                </ul>
-               
-            </div>
-
-            <div class="col-md-12">
-            <style >
-                #map{
-                    width:100%;
-                    height: 400px;
-                }
-            </style>
-         <div id="map"></div>
-            </div>
-        </div>
-    </div>
-
+   
    
                 <div class="carousel-item">
                     <ul class="list-inline row  mx-auto">
@@ -224,116 +198,12 @@
         <!-- Copyright -->
 
     </footer>
-    <!-- Footer -->
-<script >
 
 
-</script>
-
-<?php 
-
- $consulta = "SELECT * FROM usuarios WHERE servicio != 'No'";
- $ejecutar = mysqli_query($con, $consulta);
-$valor = "";
-$cont=0;
-
-$usuarios = array();
- while($fila = mysqli_fetch_array($ejecutar)){
-    
-    $nombre = ($fila['nombre']);
-    $descripcion = $fila['descripcion'];
-    $lat = $fila['ubicacion'];
-    $long = $fila['longitud'];
-    $estado = $fila['estado'];
-
-$array =[$nombre,$descripcion,$lat,$long,$estado];
- 
-
-
-    
-   array_push($usuarios, $array);
-}
-
-
-
-
-
-
-
-
- ?>
-
-<script >
-
-function initialize() {
-  
-    if(navigator.geolocation){
-      //obtenemos ubicacion
-      navigator.geolocation.getCurrentPosition((position)=>{
-    let a = position.coords.latitude;
-    let b = position.coords.longitude;
-
-     var array = [
-      ['Mi','Posicion',a,b,'1']
-
-      ];
-
-    var mark=<?php echo json_encode($usuarios);?>;
-
-
-   var marcadores = mark.concat(array);
- 
-  
-      
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 13,
-        center: new google.maps.LatLng(a,b)
-        
-      });
-      var infowindow = new google.maps.InfoWindow();
-      var marker, i;
-      for (i = 0; i < marcadores.length; i++) {  
-if(marcadores[i][4]== '1'){
- marker = new google.maps.Marker({
-           
-
-          position: new google.maps.LatLng(marcadores[i][2], marcadores[i][3]),
-    
-          map: map
-        });
-        google.maps.event.addListener(marker, 'click', (function(marker, i) {
-          return function() {
-            if(marcadores[i][0]== "Mi"){
-                infowindow.setContent("<h5>"+marcadores[i][0]+"</h5>"+' '+"<p>"+marcadores[i][1]+"</p>");
-
-            }else{
-                infowindow.setContent("<h5>"+marcadores[i][0]+"</h5>"+' '+"<p>"+marcadores[i][1]+"</p><br><a href='buzon.php'>Mensaje</a> <a href=''>Contratar</a>");
-
-            }
-            
-            infowindow.open(map, marker);
-          }
-        })(marker, i));
-}
-
-       
-      }
-
-      });
-    }else{
-      alert("tu navegador no soporta geolocalizacion!! :(")
-
-    }
-
-    
-    }
-</script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-      <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvFsfISMEo7_mzwF1cDR__G2QgPEZ1FX0&callback=initialize">
-    </script>
+  
     
 
 </body>
