@@ -130,6 +130,7 @@
                 </ul>
                
             </div>
+
             <div class="col-md-12">
             <style >
                 #map{
@@ -226,38 +227,52 @@
     <!-- Footer -->
 
 
-
+<p id="marcas"> <?php echo $marcas ?></p>
 <script >
 
-
 function initialize() {
-var a = "";
-var b = "";
+  
     if(navigator.geolocation){
       //obtenemos ubicacion
       navigator.geolocation.getCurrentPosition((position)=>{
-a = position.coords.latitude;
-b = position.coords.longitude;
+    let a = position.coords.latitude;
+    let b = position.coords.longitude;
 
-      });
-    }else{
-      alert("tu navegador no soporta geolocalizacion!! :(")
+<?php 
+$info = "";
+ $consulta = "SELECT * FROM usuarios WHERE servicio != 'No'";
+ $ejecutar = mysqli_query($con, $consulta);
 
-    }
+    $nombre = "";
+    $descripcion = "";
+    $lat = "";
+    $long = "";
 
-      var marcadores = [
-       ['Mi','Posicion',a,b],
-        //['Josue','Mecanico de motos', 10.3341119, -84.4355739],
-        ['Roque','Mecanico de motos', 10.334998, -84.431008],
-        ['Francisco','Mecanico de motos', 10.336386, -84.434377]
-      ];
+ while($fila = mysqli_fetch_array($ejecutar)){
+    
+    $nombre = ($fila['nombre']);
+    $descripcion = $fila['descripcion'];
+    $lat = $fila['ubicacion'];
+    $long = $fila['longitud'];
+
+$array =[$nombre,$descripcion,$lat,$long];
+    
+
+}
+
+ ?>
+
+    var marcadores = [
+      ['Mi','Posicion',a,b]];
+var info = document.getElementById('marcas').value;
+
+      
+
       var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 16,
-
         center: new google.maps.LatLng(a,b)
         
       });
-      alert(a+','+b);
       var infowindow = new google.maps.InfoWindow();
       var marker, i;
       for (i = 0; i < marcadores.length; i++) {  
@@ -272,6 +287,14 @@ b = position.coords.longitude;
           }
         })(marker, i));
       }
+
+      });
+    }else{
+      alert("tu navegador no soporta geolocalizacion!! :(")
+
+    }
+
+    
     }
 </script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
