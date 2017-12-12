@@ -1,5 +1,12 @@
+<?php 
+ob_start();
+session_start();
+ $con = mysqli_connect("localhost","root","","varaditico") or die ("Error de conexion");
+
+ ?>
 <!DOCTYPE html>
-<?php  $con = mysqli_connect("localhost","root","","varaditico") or die ("Error de conexion"); ?>
+
+
 <html>
 <head>
 	 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -14,6 +21,32 @@
 	<title></title>
 </head>
 <body>
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand text-white" href="index.php">Varaditico</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link text-white" href="index.php">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="mensajeria.php">Mensajes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="perfil.php">Perfil
+                        </a>
+                    </li>
+                  
+                </ul>
+            </div>
+        </div>
+    </nav>
 	<style >
 		body {
   background: #F1F3FA;
@@ -127,33 +160,23 @@
 
 
 <?php
-					$consulta = "SELECT * FROM usuarios WHERE log='1'";
-                    $ejecutar = mysqli_query($con, $consulta);
-         $nombre = "";
+        $nombre = "";
         $email = "";
         $contrasena = "";
-        $servicio = "no";
+        $servicio = "";
         $descripcion = "";
-        $estado = "0";
+        $estado = "";
         $ubicacion = "";
-        $contrasena = "";
-while($fila = mysqli_fetch_array($ejecutar)){
-	if($fila['log'] == "1"){
-
-		$nombre = $fila['nombre'];
-        $email = $fila['correo'];
-        $contrasena = $fila['contra'];
-        $servicio = $fila['servicio'];
-        $descripcion = $fila['descripcion'];
-        $estado = $fila['estado'];
-        $ubicacion = $fila['ubicacion'] + $fila['longitud'];
-        $id = $fila['id'];
-        $contrasena = md5($contrasena);
-	}
-        
-
-}
-
+        $id = "";
+   
+		$nombre = $_SESSION['nombre'];
+        $email = $_SESSION['correo'];
+        $contrasena = $_SESSION['contra'];
+        $servicio = $_SESSION['servicio'];
+        $descripcion = $_SESSION['descripcion'];
+        $estado = $_SESSION['estado'];
+        $ubicacion = $_SESSION['ubicacion'] + $_SESSION['longitud'];
+        $id = $_SESSION['id'];
   ?>
 
 
@@ -185,9 +208,7 @@ while($fila = mysqli_fetch_array($ejecutar)){
 					<button type="button" class="btn btn-success btn-sm">Contratar</button>
 					<button type="button" class="btn btn-danger btn-sm">Mensaje</button><br>
 					<br>
-					<button type="button" class="btn btn-principal btn-sm" onclick="<?php echo $consulta = "UPDATE usuarios SET log='0 ' WHERE id='$id'" ;
-    
-          $ejecutar = mysqli_query($con, $consulta); ?>" action= "login.php">Log Out</button>
+					<button type="button" class="btn btn-principal btn-sm" onclick="<?php ?>" action="login.php">Log Out</button>
 
 
 				</div>
@@ -195,7 +216,7 @@ while($fila = mysqli_fetch_array($ejecutar)){
 			</div>
 		</div>
 		<div class="col-md-9">
-            <div class="profile-content">
+            <div class="profile-content" style="margin-top: 30px">
 			   <form method = "POST" action = "perfil.php">
                                      <label> Clave de ubicacion :</label>
                                     <input type="text" class="form-control" id="ubicacion" name="ubicacion" required readonly value="<?php echo $ubicacion ?>">
@@ -204,7 +225,7 @@ while($fila = mysqli_fetch_array($ejecutar)){
         <br/>
 
         <label> Password :</label>
-        <input type="password" class="form-control" name="contra" value="<?php echo $contrasena ?>" required >
+        <input type="text" class="form-control" name="contra" value="<?php echo $contrasena ?>" required >
         <br/>
             
             <label> Email :</label>
@@ -213,10 +234,10 @@ while($fila = mysqli_fetch_array($ejecutar)){
   
            <label> Servicio :</label>
                                <div class="col-md-12">
-                <select name="servicios"  class="form-control" value="<?php echo $servicio ?>">
-                            <option value="no" selected>servicio?</option>
-                            <option value="Gruas">Gruas</option>
-                            <option value="Mecanico">Mecanico</option>
+                <select name="servicios"  class="form-control" >
+                            <option value="no" <?php if ($servicio == 'no') echo ' selected="selected"'; ?>>servicio?</option>
+                            <option value="Gruas" <?php if ($servicio == 'Gruas') echo ' selected="selected"'; ?>>Gruas</option>
+                            <option value="Mecanico" <?php if ($servicio == 'Mecanico') echo ' selected="selected"'; ?>>Mecanico</option>
     
                 </select>
 
@@ -225,12 +246,29 @@ while($fila = mysqli_fetch_array($ejecutar)){
              <label> Descripcion :</label>
              <input type="text" class="form-control" name="descripcion" value="<?php echo $descripcion ?>" >
         <br/>
-        <input type="submit"  class="form-control" name="insert" value ="Actualizar">
-
-       
-
-            
+        <input type="submit"  class="form-control" name="update" value ="Actualizar">
+ 
    </form>
+
+   <?php
+if(isset($_POST['update'])){
+
+    $nombre = $_POST['nombre'];
+    $correo = $_POST['correo'];
+    $contra = md5($contra);
+    $servicio = $_POST['servicios'];
+    $descripcion = $_POST['descripcion'];
+    $ubicacion = $_POST['ubicacion'];
+    $longitud = $_POST['longitud'];
+
+
+
+$ejecutar = mysqli_query($con, $insert);
+if($ejecutar){
+ echo "<script> alert ('REGISTRADO!')</script>";
+ }
+}
+?>
             </div>
 		</div>
 	</div>

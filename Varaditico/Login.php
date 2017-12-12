@@ -1,5 +1,11 @@
+<?php 
+ob_start();
+session_start();
+
+ $con = mysqli_connect("localhost","root","","varaditico") or die ("Error de conexion"); 
+ ?>
 <!DOCTYPE html>
-<?php  $con = mysqli_connect("localhost","root","","varaditico") or die ("Error de conexion"); ?>
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -84,44 +90,37 @@
                     				<input type="password" class="input" name="pass" autocomplete="off" placeholder="Password">	
                     				<input type="submit" name="log" class="form-control" value="Login">
                     			</form>
-                    			<?php
-                                
+<?php
                                 $consulta = "SELECT * FROM usuarios";
-
                                $ejecutar = mysqli_query($con, $consulta);
-
 if(isset($_POST['log'])){
     $logeo = true;
-
-
-while($fila = mysqli_fetch_array($ejecutar)){
-    
+while($fila = mysqli_fetch_array($ejecutar)){    
     $contra = md5($_POST['pass']);
     $pass = ($fila['contra']);
     $correoL = $_POST['correo'];
     $correoBD = $fila['correo'];
-
-    if($contra== $pass && $correoL== $correoBD){
-
+    if($contra== $pass && $correoL== $correoBD){ 
+      $_SESSION['id'] = ($fila['id']);
+      $_SESSION['nombre'] = ($fila['nombre']);
+      $_SESSION['correo'] = ($fila['correo']);
+      $_SESSION['contra'] = $_POST['pass'];
+      $_SESSION['servicio'] = ($fila['servicio']);
+      $_SESSION['descripcion'] = ($fila['descripcion']);
+      $_SESSION['ubicacion'] = ($fila['ubicacion']);
+      $_SESSION['longitud'] = ($fila['longitud']);
+      $_SESSION['estado'] = ($fila['estado']);
         $logeo = false;
+         $id=$fila['id'];
           echo "<script> alert ('LOGEADO!')</script>"; 
-          echo '<script type="text/javascript">
-           window.location = "index.php"
-      </script>';
-      $id=$fila['id'];
-      $consulta = "UPDATE usuarios SET log = '1' WHERE id=$id";
-      $ejecutar = mysqli_query($con, $consulta);
+          header("location: index.php");
           break;   
     }
-
 }
 if($logeo){
  echo "<script> alert ('Usuario No Registrado!')</script>";
 }
-
 }
-
-
 ?>
                     		</div>
                             <!-- TABS CONTENT SIGNUP -->
@@ -183,9 +182,6 @@ document.getElementById('longitud').value = res2;
         }
    </script>
                     			<?php
-
-                              
-
 if(isset($_POST['insert'])){
 
     $nombre = $_POST['nombre'];
@@ -198,32 +194,17 @@ if(isset($_POST['insert'])){
     $ubicacion = $_POST['ubicacion'];
     $longitud = $_POST['longitud'];
     $estado= 1;
-
-      
-
-    
-
    if($_POST['servicios']=="no"){
-$insert = "INSERT INTO usuarios(nombre, correo,contra,servicio,descripcion,estado,ubicacion,longitud,log) VALUES ('$nombre','$correo','$contra','NO','NO','1','$ubicacion','$longitud','0')";
+$insert = "INSERT INTO usuarios(nombre, correo,contra,servicio,descripcion,estado,ubicacion,longitud) VALUES ('$nombre','$correo','$contra','NO','NO','1','$ubicacion','$longitud')";
    }else{
-    $insert = "INSERT INTO usuarios(nombre, correo,contra,servicio,descripcion,estado,ubicacion,longitud,log) VALUES ('$nombre','$correo','$contra','$servicio','$descripcion','$estado','$ubicacion','$longitud','0')";
+    $insert = "INSERT INTO usuarios(nombre, correo,contra,servicio,descripcion,estado,ubicacion,longitud) VALUES ('$nombre','$correo','$contra','$servicio','$descripcion','$estado','$ubicacion','$longitud')";
    }
- 
-
-
-
-
 $ejecutar = mysqli_query($con, $insert);
 if($ejecutar){
-
  echo "<script> alert ('REGISTRADO!')</script>";
-
  }
-
 }
-
 ?>
-
                     		</div>
                     	</div>
                 

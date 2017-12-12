@@ -1,5 +1,11 @@
-<!DOCTYPE html>
-<?php  $con = mysqli_connect("localhost","root","","varaditico") or die ("Error de conexion"); ?>
+
+<?php 
+ob_start();
+session_start();
+
+ $con = mysqli_connect("localhost","root","","varaditico") or die ("Error de conexion"); 
+ ?>
+ <!DOCTYPE html>
 <html>
 <head>
 
@@ -245,8 +251,9 @@ $usuarios = array();
     $lat = $fila['ubicacion'];
     $long = $fila['longitud'];
     $estado = $fila['estado'];
+    $id = $fila['id'];
 
-$array =[$nombre,$descripcion,$lat,$long,$estado];
+$array =[$nombre,$descripcion,$lat,$long,$estado,$id];
  
 
 
@@ -274,7 +281,7 @@ function initialize() {
     let b = position.coords.longitude;
 
      var array = [
-      ['Mi','Posicion',a,b,'1']
+      ['Mi','Posicion',a,b,'1','0']
 
       ];
 
@@ -307,7 +314,7 @@ if(marcadores[i][4]== '1'){
                 infowindow.setContent("<h5>"+marcadores[i][0]+"</h5>"+' '+"<p>"+marcadores[i][1]+"</p>");
 
             }else{
-                infowindow.setContent("<h5>"+marcadores[i][0]+"</h5>"+' '+"<p>"+marcadores[i][1]+"</p><br><a href='buzon.php'>Mensaje</a> <a href=''>Contratar</a>");
+                infowindow.setContent("<p>Numero de Usuario: "+marcadores[i][5]+"</p>"+"<h5>"+marcadores[i][0]+"</h5>"+' '+"<p>"+marcadores[i][1]+"</p><br><a href='buzon.php'>Mensaje</a> <a href=''>Contratar</a>");
 
             }
             

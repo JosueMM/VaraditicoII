@@ -1,5 +1,11 @@
+<?php 
+ob_start();
+session_start();
+
+ $con = mysqli_connect("localhost","root","","varaditico") or die ("Error de conexion"); 
+ ?>
 <!DOCTYPE html>
-<?php  $con = mysqli_connect("localhost","root","","varaditico") or die ("Error de conexion"); ?>
+
 <html>
 <head>
 
@@ -80,37 +86,121 @@
         
        <div class="panel panel-default">
         <div class="row">
-           <form class="form-horizontal col-md-12">
-<fieldset>
+
+              <form method="POST" class="form-horizontal col-md-12" >
+                                     <input type="text" class="input" style="  -webkit-border-radius: 5px; 
+    -moz-border-radius: 5px; 
+    border-radius: 5px; 
+    border: 1px solid #848484; 
+    outline:0; 
+    height:25px; 
+    padding: 20px;
+    width: 100px; "  name="num" > 
+                                    <input type="submit" name="log"  style="background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    margin: 3px;
+    padding: 12px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 12px;
+    font-size: 16px;" value="Verificar si el Usuario Existe">
+                                </form>
+     
+
+<?php      
+            $consulta = "SELECT * FROM usuarios";
+   $ejecutar = mysqli_query($con, $consulta);
+
+if(isset($_POST['log'])){ 
+
+   $usu = true;
+while($fila = mysqli_fetch_array($ejecutar)){    
+    
+    if($fila['id'] == $_POST['num']){
+      $nombre = ($fila['nombre']);
+       $descripcion = ($fila['descripcion']);
+        $_SESSION['idUser'] = $fila['id'];
+      $_SESSION['nombreUser'] = $nombre;
+       $_SESSION['descripcionUser'] = $descripcion;
+       $usu = false;
+    }
+    }
+    
+    if($usu){
+        echo "<script> alert('Numero de usuario no existe') </script>";
+    
+    }
+}
 
 
+?>
 
-<!-- Textarea -->
-<div class="form-group col-md-12">
-  <label class="col-md-12 control-label" for="textarea" style="font-size: 15px;">Escriba el mensaje que desea enviar <strong>le recomendamos que se abstenga de escribir palabras ofensivas y/o que dañen la integridad moral y personal de una persona.</strong></label>
-  <div class="col-md-12">                     
+           <form method="POST" class="form-horizontal col-md-12">
+
+               <label class="col-md-12 control-label" for="textarea" style="font-size: 15px;">Escriba el mensaje que desea enviar <strong>le recomendamos que se abstenga de brindar informacion personal o sensible que no extrictamente necesaria.</strong></label>
+  <div class="col-md-12">  
+<label id="usuario" class="col-md-12 control-label" for="textarea" style="font-size: 15px;">Para: <?php echo $_SESSION['nombreUser']  ?> Servicio : <?php echo $_SESSION['descripcionUser']  ?></label>
     <textarea class="form-control col-md-12" rows="7" cols="" id="textarea" name="textarea"></textarea>
   </div>
 </div>
 
-<!-- Button (Double) -->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="button1id">Listo?</label>
-  <div class="col-md-8">
-    <button id="button1id" name="button1id" class="btn btn-success">Enviar</button>
-    <button id="button2id" name="button2id" class="btn btn-danger">Cancelar</button>
-  </div>
-</div>
 
-</fieldset>
-</form>
-       </div>
-     </div>      
-        
-    </div>
-    <!-- Card -->
+    <input type="submit" name="ok" style="background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    margin: 3px;
+    padding: 12px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 12px;
+    font-size: 16px;" value="Enviar">
+    <input type="submit" name="no" style="background-color: #f44336; /* Green */
+    border: none;
+    color: white;
+    margin: 3px;
+    padding: 12px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 12px;
+    font-size: 16px;" value="Cancelar">
+<br>
 
-    
+
+
+           </form>
+
+    <?php 
+if(isset($_POST['ok'])){ 
+
+$idUser = $_SESSION['idUser'];
+$id = $_SESSION['id']; 
+$mensaje = $_POST['textarea'];
+
+ $consulta = "INSERT into mensajeria (id_usuarioEnvia, id_usuarioRecive, mensaje) values ('$id','$idUser','$mensaje')";
+   $ejecutar = mysqli_query($con, $consulta);
+
+   echo "<script> alert('Mensaje enviado con exito') </script>";
+
+    }
+
+    if(isset($_POST['no'])){
+        $_SESSION['idUser'] = 0;
+        $_SESSION['nombreUser'] = "";
+        $_SESSION['descripcionUser'] = "";
+    header("index.php");
+
+
+    }
+
+
+
+
+
+    ?>
 
    
                 <div class="carousel-item">
