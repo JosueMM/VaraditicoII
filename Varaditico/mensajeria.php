@@ -1,5 +1,11 @@
+<?php 
+ob_start();
+session_start();
+
+ $con = mysqli_connect("localhost","root","","varaditico") or die ("Error de conexion"); 
+ ?>
 <!DOCTYPE html>
-<?php  $con = mysqli_connect("localhost","root","","varaditico") or die ("Error de conexion"); ?>
+
 <html>
 <head>
 
@@ -94,22 +100,41 @@
   <h3 class="display-4 text-center">Mensajeria</h3>
 </div>
     <div class="row col-md-12 col-md-offset-2 custyle table-responsive">
-    <table class="table  table-striped custab ">
+    <table class="table  table-striped custab">
     <thead>
     <a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b>Borrar todos los mensajes</a>
         <tr>
-            <th>ID</th>
+            <th>#Codigo</th>
             <th>Usuario</th>
             <th>Mensaje</th>
             <th class="text-center">Action</th>
         </tr>
-    </thead>
-            <tr>
-                <td>1</td>
-                <td>News</td>
-                <td>News Cate</td>
-                <td class="text-center"><a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Borrar</a></td>
+</thead>
+<tr>
+        <?php
+$idd =  $_SESSION['id'];
+$consulta = "SELECT T2.id, T1.nombre, T2.mensaje
+FROM usuarios T1 INNER JOIN mensajeria T2 where T1.id = T2.id_usuarioEnvia and T2.id_usuarioRecive = $idd";
+$ejecutar = mysqli_query($con,$consulta);
+$i = 0;
+
+while($fila = mysqli_fetch_array($ejecutar)){
+$id = $fila['id'];
+$nombre = $fila['nombre'];
+$mensaje = $fila['mensaje'];
+
+
+$i++;
+
+?>
+    
+            
+                <td><?php echo $id; ?></td>
+                <td><?php echo $nombre; ?></td>
+                <td><?php echo $mensaje; ?></td>
+                <td class="text-center"><a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove" ></span> Borrar</a></td>
             </tr>
+            <?php } ?>
             
     </table>
     </div>
