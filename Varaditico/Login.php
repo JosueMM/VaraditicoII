@@ -89,10 +89,14 @@ session_start();
                     				<input type="text" class="input" name="correo" autocomplete="off" placeholder="Email or Username">
                     				<input type="password" class="input" name="pass" autocomplete="off" placeholder="Password">	
                     				<input type="submit" name="log" class="form-control" value="Login">
+                                    <input style="visibility:hidden" type="text" class="input" id="ubicacion" name="ubicacion" required readonly >
+                                    <input style="visibility:hidden" type="text" class="input" id="longitud" name="longitud" required readonly >
                     			</form>
 <?php
-                                $consulta = "SELECT * FROM usuarios";
-                               $ejecutar = mysqli_query($con, $consulta);
+                             $consulta = "SELECT * FROM usuarios";
+                            $ejecutar = mysqli_query($con, $consulta);
+                            
+
 if(isset($_POST['log'])){
     $logeo = true;
 while($fila = mysqli_fetch_array($ejecutar)){    
@@ -110,8 +114,12 @@ while($fila = mysqli_fetch_array($ejecutar)){
       $_SESSION['ubicacion'] = ($fila['ubicacion']);
       $_SESSION['longitud'] = ($fila['longitud']);
       $_SESSION['estado'] = ($fila['estado']);
+      $ubicacion = $_POST['ubicacion'];
+      $longitud = $_POST['longitud'];
         $logeo = false;
          $id=$fila['id'];
+         $update = "UPDATE usuarios SET ubicacion = '$ubicacion', longitud ='$longitud' WHERE id = $id";
+                            $ejecutar = mysqli_query($con, $update);
           echo "<script> alert ('LOGEADO!')</script>"; 
           header("location: index.php");
           break;   

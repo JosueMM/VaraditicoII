@@ -1,27 +1,27 @@
-<?php 
+<?php
 ob_start();
 session_start();
- $con = mysqli_connect("localhost","root","","varaditico") or die ("Error de conexion");
-
- ?>
+$con = mysqli_connect("localhost", "root", "", "varaditico") or die("Error de conexion");
+?>
 <!DOCTYPE html>
 
 
 <html>
 <head>
-	 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 
 
 
 
 
-	<title></title>
+  <title></title>
 </head>
 <body>
-	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand text-white" href="index.php">Varaditico</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,8 +50,8 @@ session_start();
             </div>
         </div>
     </nav>
-	<style >
-		body {
+  <style >
+    body {
   background: #F1F3FA;
 }
 
@@ -158,107 +158,155 @@ session_start();
   background: #fff;
   min-height: 460px;
 }
-	</style>
+  </style>
 
 
 
-<?php
-        $nombre = "";
-        $email = "";
-        $contrasena = "";
-        $servicio = "";
-        $descripcion = "";
-        $estado = "";
-        $ubicacion = "";
-        $id = "";
-   
-		$nombre = $_SESSION['nombre'];
-        $email = $_SESSION['correo'];
-        $contrasena = $_SESSION['contra'];
-        $servicio = $_SESSION['servicio'];
-        $descripcion = $_SESSION['descripcion'];
-        $estado = $_SESSION['estado'];
-        $ubicacion = $_SESSION['ubicacion'] .",".  $_SESSION['longitud'];
-        $id = $_SESSION['id'];
-  ?>
+
 
 
 <div class="container">
     <div class="row profile">
-		<div class="col-md-3">
-			<div class="profile-sidebar">
-				<!-- SIDEBAR USERPIC -->
-				<div class="profile-userpic">
-					
-				</div>
-				<!-- END SIDEBAR USERPIC -->
-				<!-- SIDEBAR USER TITLE -->
-				<div class="profile-usertitle">
-					<div class="profile-usertitle-name">
-						Nombre : <?php echo $nombre ?>
-					</div>
-					<div class="profile-usertitle-job">
-						Proveedor: <?php echo $servicio ?>
-					</div>
-					<div class="profile-usertitle-job">
-						<p id="correo">Correo: <?php echo $email ?></p>
-						<p id="Descripcion">Descripcion del Servicio: <?php echo $descripcion ?></p>
-					</div>
-				</div>
-				<!-- END SIDEBAR USER TITLE -->
-				<!-- SIDEBAR BUTTONS -->
-				<div class="profile-userbuttons">
-					<button type="button" class="btn btn-success btn-sm" onclick = "location='contratar.php'">Contratar</button>
-					<button type="button" class="btn btn-danger btn-sm" onclick = "location='buzon.php'">Mensaje</button><br>
-					<br>
-					<button type="button" class="btn btn-principal btn-sm" onclick = "location='login.php'">Log Out</button>
+    <div class="col-md-3">
+      <div class="profile-sidebar">
+        <!-- SIDEBAR USERPIC -->
+        <div class="profile-userpic">
 
+          <?php
 
-				</div>
-				<!-- END SIDEBAR BUTTONS -->		
-			</div>
-		</div>
-		<div class="col-md-9">
-            <div class="profile-content" style="margin-top: 30px">
-			   <form method = "POST" action = "perfil.php">
-                                     <label> Clave de ubicacion :</label>
-                                    <input type="text" class="form-control" id="ubicacion" name="ubicacion" required readonly value="<?php echo $ubicacion ?>">
-        <label> Nombre :</label>
-        <input type="text" class="form-control" name="nombre" value="<?php echo $nombre ?>" required >
-        <br/>
+$nombre = "";
+$correo = "";
+$contrasena = "";
+$servicio = "";
+$descripcion = "";
+$estado = "";
+$ubicacion = "";
+$id = "";
+$consulta = "SELECT * FROM usuarios";
+$ejecutar = mysqli_query($con, $consulta);
 
-        <label> Password :</label>
-        <input type="text" class="form-control" name="contra" value="<?php echo $contrasena ?>" required >
-        <br/>
-            
-            <label> Email :</label>
-        <input type="email" class="form-control" name="correo" value="<?php echo $email ?>" required >
-        <br/>
-  
-           <label> Servicio :</label>
-                               <div class="col-md-12">
-                <select name="servicios"  class="form-control" >
-                            <option value="no" <?php if ($servicio == 'no') echo ' selected="selected"'; ?>>servicio?</option>
-                            <option value="Gruas" <?php if ($servicio == 'Gruas') echo ' selected="selected"'; ?>>Gruas</option>
-                            <option value="Mecanico" <?php if ($servicio == 'Mecanico') echo ' selected="selected"'; ?>>Mecanico</option>
+        $nombre = $_SESSION['nombre'];
+        $correo = $_SESSION['correo'];
+        $servicio = $_SESSION['servicio'];
+        $descripcion = $_SESSION['descripcion'];
+        $id = $_SESSION['id'];
+
+?>
+          
+        </div>
+        <!-- END SIDEBAR USERPIC -->
+        <!-- SIDEBAR USER TITLE -->
+        <div class="profile-usertitle">
     
-                </select>
-
-            </div>
-            <br/>
-             <label> Descripcion :</label>
-             <input type="text" class="form-control" name="descripcion" value="<?php echo $descripcion ?>" >
-        <br/>
-   </form>
-
-
-            </div>
-		</div>
-	</div>
+          <div class="profile-usertitle-name">
+            Nombre : <?php
+echo $nombre ?>
+          </div>
+          <div class="profile-usertitle-job">
+            Proveedor: <?php
+echo $servicio ?>
+          </div>
+          <div class="profile-usertitle-job">
+            <p id="correo">Correo: <?php
+echo $correo ?></p>
+            <p id="Descripcion">Descripcion del Servicio: <?php
+echo $descripcion ?></p>
+          </div>
+        </div>
+        <!-- END SIDEBAR USER TITLE -->
+        <!-- SIDEBAR BUTTONS -->
+      
+        <!-- END SIDEBAR BUTTONS -->    
+      </div>
+    </div>
+    <div class="col-md-9">
+            <div class="profile-content" style="margin-top: 30px">
+         <div class="container">
+  <div class="page-header">
+  <h3 class="display-4 text-center">Trabajos</h3>
 </div>
 
-<br>
-<br>
+
+<div class="row col-md-12 col-md-offset-2 custyle table-responsive">
+    <table class="table  table-striped custab">
+    <thead>
+  
+        <tr>
+            <th>#Codigo</th>
+            <th>Usuario</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+
+          
+        </tr>
+</thead>
+<tr>
+        <?php
+$idd = $_SESSION['id'];
+$consulta = "SELECT T2.id, T1.nombre,T2.estado,T2.fecha,T2.valorado
+FROM usuarios T1 INNER JOIN trabajos T2 where T1.id = T2.id_Contratado and T2.id_contrata = $idd";
+$ejecutar = mysqli_query($con, $consulta);
+$i = 0;
+
+while ($fila = mysqli_fetch_array($ejecutar))
+  {
+  $id = $fila['id'];
+  $nombre = $fila['nombre'];
+  $estado = $fila['estado'];
+   $fecha = $fila['fecha'];
+  $val = $fila['valorado'];
+  $i++;
+?>
+    
+            
+                <td><?php
+  echo $id; ?></td>
+                <td><?php
+  echo $nombre; ?></td>
+                <td><?php
+  echo $estado; ?></td>
+                <td><?php
+  echo $fecha; ?></td>
+  <?php 
+if($estado == "Terminado" && $val == 0){?>
+
+<td><a href="contratados.php?valorar=<?php echo $id;?>">Valorar</a>
+</td>
+<?php
+}else{?>
+<td>Trabajo no terminado o Ya lo Valoraste</td>
+<?php } ?>
+  
+
+  
+               
+            </tr>
+            <?php
+  } ?>
+            
+    </table>
+     <?php
+        if(isset($_GET['valorar'])){
+            include("edit.php");
+        }
+
+    ?>
+
+    </div>
+       
+     
+
+</div>
+    </div>
+  </div>
+</div>
+
+<br />
+<br />
+
+
+
+
 
 
 

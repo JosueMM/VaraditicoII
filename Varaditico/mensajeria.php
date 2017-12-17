@@ -29,10 +29,13 @@ session_start();
                         <a class="nav-link text-white" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Servicios</a>
+                        <a class="nav-link text-white" href="trabajos.php">Trabajos</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link text-white" href="contratados.php">Valorar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Mensajes</a>
+                        <a class="nav-link text-white" href="buzon.php">Mensajes</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="perfil.php">Perfil
@@ -132,11 +135,16 @@ $i++;
                 <td><?php echo $id; ?></td>
                 <td><?php echo $nombre; ?></td>
                 <td><?php echo $mensaje; ?></td>
-                <td class="text-center"><a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove" ></span> Borrar</a></td>
+                <td><a href="mensajeria.php?coment=<?php echo$id;?>">Eliminar</a></td>
             </tr>
             <?php } ?>
             
     </table>
+     <?php
+        if(isset($_GET['coment'])){
+            include("edit.php");
+        }
+    ?>
     </div>
 </div>
    

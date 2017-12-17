@@ -29,7 +29,10 @@ session_start();
                         <a class="nav-link text-white" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Servicios</a>
+                        <a class="nav-link text-white" href="trabajos.php">Trabajos</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link text-white" href="contratados.php">Valorar</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="mensajeria.php">Mensajes</a>
@@ -109,7 +112,10 @@ session_start();
                                 </form>
      
 
-<?php      
+<?php     
+ 
+      $_SESSION['nombreUser'] = "";
+       $_SESSION['descripcionUser'] = "";
             $consulta = "SELECT * FROM usuarios";
    $ejecutar = mysqli_query($con, $consulta);
 
@@ -188,9 +194,6 @@ $mensaje = $_POST['textarea'];
     }
 
     if(isset($_POST['no'])){
-        $_SESSION['idUser'] = 0;
-        $_SESSION['nombreUser'] = "";
-        $_SESSION['descripcionUser'] = "";
     header("index.php");
 
 

@@ -29,7 +29,10 @@ session_start();
                         <a class="nav-link text-white" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Servicios</a>
+                        <a class="nav-link text-white" href="trabajos.php">Trabajos</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link text-white" href="contratados.php">Valorar</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="mensajeria.php">Mensajes</a>
@@ -314,7 +317,7 @@ if(marcadores[i][4]== '1'){
                 infowindow.setContent("<h5>"+marcadores[i][0]+"</h5>"+' '+"<p>"+marcadores[i][1]+"</p>");
 
             }else{
-                infowindow.setContent("<p>Numero de Usuario: "+marcadores[i][5]+"</p>"+"<h5>"+marcadores[i][0]+"</h5>"+' '+"<p>"+marcadores[i][1]+"</p><br><a href='buzon.php'>Mensaje</a> <a href=''>Contratar</a>");
+                infowindow.setContent("<p>Numero de Usuario: "+marcadores[i][5]+"</p>"+"<h5>"+marcadores[i][0]+"</h5>"+' '+"<p>"+marcadores[i][1]+"</p><br><a href='buzon.php'>Mensaje</a> <a href='contratar.php'>Contratar</a>");
 
             }
             
